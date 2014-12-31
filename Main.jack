@@ -1,0 +1,19 @@
+class Main {
+    static String input;
+
+    function void main() {
+        do Output.printString("JackScheme REPL v0.0.1");
+        do Output.println();
+        do Output.printString("HELLO.");
+        do Output.println();
+        do Output.println();
+
+        while (true) {
+            let input = Keyboard.readLine("scheme> ");
+            do Output.printString(input);
+            do Output.println();
+        }
+
+        return;
+    }
+}
