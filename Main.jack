@@ -4,7 +4,7 @@ class Main {
     function void main() {
         var List numbers;
         var ProcAdd add;
-        var int sum;
+        var NumberCell sum;
 
         do CellConsts.init();
 
@@ -13,7 +13,7 @@ class Main {
         let add = ProcAdd.new();
 
         let sum = add.run(numbers);
-        do Output.printInt(sum);
+        do Output.printInt(sum.value());
 
         do Output.printString("JackScheme REPL v0.0.1");
         do Output.println();

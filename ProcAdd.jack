@@ -6,12 +6,18 @@ class ProcAdd {
         return c.value();
     }
 
-    method int run(List cells) {
+    function Cell sum(List cells) {
         if (cells = null) {
             return 0;
         }
 
-        return ProcAdd.unwrapCell(cells.head()) + run(cells.tail());
+        return ProcAdd.unwrapCell(cells.head()) + ProcAdd.sum(cells.tail());
+    }
+
+    // why a method? so we can simulate 'first-class' Proc and
+    // put this in the environment as part of Proc object
+    method Cell run(List cells) {
+        return NumberCell.new(ProcAdd.sum(cells));
     }
 
     constructor ProcAdd new() {
