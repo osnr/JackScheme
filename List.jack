@@ -1,0 +1,38 @@
+/** The List class provides a linked list abstraction + comparison. */
+class List {
+    field int data; // could be void*
+    field List next;
+
+    constructor List new(int car, List cdr) {
+        let data = car;
+        let next = cdr;
+        return this;
+    }
+
+    /* Disposes this List by recursively disposing its tail. */
+    method void dispose() {
+        if (~(next = null)) {
+            do next.dispose();
+        }
+        // Use an OS routine to recycle the memory held by this
+        // object.
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method int get(int i) {
+        if (i = 0) {
+            return data;
+        }
+        if (i < 0) {
+            do Output.printString("negative index into List");
+            return null;
+        }
+        if (~(next = null)) {
+            return next.get(i - 1);
+        }
+
+        do Output.printString("empty list access");
+        return null;
+    }
+} // class List

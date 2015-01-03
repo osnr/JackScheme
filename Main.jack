@@ -4,7 +4,7 @@ class Main {
     function void main() {
         do Output.printString("JackScheme REPL v0.0.1");
         do Output.println();
-        do Output.printString("HELLO.");
+        do Output.printString("Hello.");
         do Output.println();
         do Output.println();
 

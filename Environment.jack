@@ -1,0 +1,26 @@
+class Environment {
+    field Environment outer_;
+
+    field StringList symbols_;
+    field List cells_;
+
+    method Environment find(String variable) {
+        if (~(symbols_.find(variable) = -1)) {
+            return this;
+        }
+
+        if (outer_) {
+            return outer_.find(variable);
+        }
+
+        do Output.printString("unbound symbol");
+        do Output.println();
+        return null;
+    }
+
+    method Cell get(String variable) {
+        var int i;
+        let i = symbols_.find(variable);
+        return cells_.get(i);
+    }
+}

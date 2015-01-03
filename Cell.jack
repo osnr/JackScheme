@@ -1,0 +1,33 @@
+class Cell {
+    static int SYMBOL;
+    static int NUMBER;
+    static int LIST;
+    static int PROC;
+    static int LAMBDA;
+
+    static Cell FALSE;
+    static Cell TRUE;
+    static Cell NIL;
+
+    field int type; // CellType
+    field String val;
+
+    function void init() {
+        let SYMBOL = 0;
+        let NUMBER = 1;
+        let LIST = 2;
+        let PROC = 3;
+        let LAMBDA = 4;
+
+        let FALSE = Symbol.new(SYMBOL, "#f");
+        let TRUE = Symbol.new(SYMBOL, "#t");
+        let NIL = Symbol.new(SYMBOL, "nil");
+        return;
+    }
+
+    constructor Cell new(int cellType, String cellVal) {
+        let type = cellType;
+        let val = cellVal;
+        return this;
+    }
+}
