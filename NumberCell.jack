@@ -1,0 +1,16 @@
+class NumberCell {
+    field int val;
+
+    method int type() {
+        return CellConsts.NUMBER();
+    }
+
+    method int value() {
+        return val;
+    }
+
+    constructor NumberCell new(int v) {
+        let val = v;
+        return this;
+    }
+}

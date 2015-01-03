@@ -35,4 +35,12 @@ class List {
         do Output.printString("empty list access");
         return null;
     }
+
+    method int head() {
+        return data;
+    }
+
+    method List tail() {
+        return next;
+    }
 } // class List

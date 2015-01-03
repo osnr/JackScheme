@@ -1,0 +1,16 @@
+class SymbolCell {
+    field String val;
+
+    method int type() {
+        return CellConsts.SYMBOL();
+    }
+
+    method String value() {
+        return val;
+    }
+
+    constructor SymbolCell new(String v) {
+        let val = v;
+        return this;
+    }
+}

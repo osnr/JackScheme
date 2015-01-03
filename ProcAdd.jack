@@ -1,0 +1,20 @@
+class ProcAdd {
+    field int __; // dummy to get around http://nand2tetris-questions-and-answers-forum.32033.n3.nabble.com/Possible-bug-in-supplied-OS-Jack-Compiler-td1328661.html#a4028239
+
+    function int unwrapCell(NumberCell c) {
+        // assumes c is NUMBER
+        return c.value();
+    }
+
+    method int run(List cells) {
+        if (cells = null) {
+            return 0;
+        }
+
+        return ProcAdd.unwrapCell(cells.head()) + run(cells.tail());
+    }
+
+    constructor ProcAdd new() {
+        return this;
+    }
+}
