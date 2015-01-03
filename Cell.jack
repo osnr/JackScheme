@@ -1,8 +1,13 @@
 // abstract interface
 class Cell {
-    field int _val;
+    field int type;
+    field int val;
 
     method int type() {
-        return -1;
+        return type;
+    }
+
+    method int value() {
+        return val;
     }
 }

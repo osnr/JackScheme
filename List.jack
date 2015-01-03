@@ -43,4 +43,12 @@ class List {
     method List tail() {
         return next;
     }
+
+    method int size() {
+        if (next = 0) {
+            return 1;
+        } else {
+            return 1 + next.size();
+        }
+    }
 } // class List

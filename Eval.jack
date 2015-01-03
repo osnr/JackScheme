@@ -1,0 +1,128 @@
+class Eval {
+    function Cell eval(Cell x, Environment env) {
+        var String symbol;
+        var Environment foundEnv;
+        var Cell result;
+        if (x.type() = CellConsts.SYMBOL()) {
+            let symbol = x.value();
+            let foundEnv = env.find(symbol);
+            if (~(foundEnv = null)) {
+                let result = foundEnv.get(symbol);
+            } else {
+                let result = null;
+            }
+
+            if (result = null) {
+                return ProcCell.get(symbol);
+
+            } else {
+                return result;
+            }
+        }
+        if (x.type() = CellConsts.NUMBER()) {
+            return x;
+        }
+        if (x.type() = CellConsts.LIST()) {
+            return Eval.evalList(x, env);
+        }
+        do Output.printString("invalid cell type");
+        return null;
+    }
+
+    function Cell evalList(ListCell x, Environment env) {
+        var List list;
+        var Cell head;
+        var String headVal;
+
+        let list = x.list();
+        if (list = null) {
+            return CellConsts.NIL();
+        }
+
+        let head = list.head();
+        if (head.type() = CellConsts.SYMBOL()) {
+            let headVal = head.value();
+            if (headVal = "quote") {
+                // (quote exp)
+                return list.get(1);
+            }
+            if (headVal = "if") {
+                // (if text conseq [alt])
+                return Eval.eval(Eval.reduceIf(list, env), env);
+            }
+        }
+
+        return Eval.evalApp(list, env);
+    }
+
+    function Cell reduceIf(List list, Environment env) {
+        var Cell condition;
+        var String condResult;
+        let condition = list.get(1);
+        let condition = Eval.eval(condition, env);
+
+        let condResult = condition.value();
+        if (StringList.equals(condResult, "#f")) {
+            if (list.size() < 4) {
+                return CellConsts.NIL();
+            } else {
+                return list.get(3);
+            }
+        } else {
+            return list.get(2);
+        }
+    }
+
+    function Cell evalApp(List list, Environment env) {
+        var Cell head;
+        var List exps;
+
+        var int i;
+        var int size;
+        let i = 1;
+        let size = list.size();
+
+        let head = Eval.eval(list.head(), env);
+        let exps = null;
+
+        while (i < size) {
+            let exps = List.new(Eval.eval(list.get(i), env), exps);
+            let i = i + 1;
+        }
+
+        if (head.type() = CellConsts.LAMBDA()) {
+            return Eval.evalAppLambda(head, exps, env);
+        }
+        if (head.type() = CellConsts.PROC()) {
+            return Eval.evalAppProc(head, exps, env);
+        }
+
+        do Output.printString("not a function");
+        return null;
+    }
+
+    function Cell evalAppLambda(LambdaCell lambda, List exps, Environment env) {
+        var List lambdaParts;
+        var ListCell paramsCell;
+        var List params;
+
+        var Environment env;
+
+        var Cell body;
+
+        let lambdaParts = lambda.list();
+        let paramsCell = lambdaParts.get(1);
+        let params = paramsCell.list();
+
+        let env = lambda.env();
+        let env = Environment.new(params, exps, env);
+
+        let body = lambdaParts.get(2);
+
+        return Eval.eval(body, env);
+    }
+
+    function Cell evalAppProc(ProcCell proc, List exps, Environment env) {
+        return proc.run(exps);
+    }
+}

@@ -1,0 +1,18 @@
+class ListCell {
+    field int type;
+    field List lst;
+
+    method int type() {
+        return type;
+    }
+
+    method List list() {
+        return lst;
+    }
+
+    constructor ListCell new(List l) {
+        let type = CellConsts.LIST();
+        let lst = l;
+        return this;
+    }
+}

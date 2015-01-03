@@ -2,18 +2,15 @@ class Main {
     static String input;
 
     function void main() {
-        var List numbers;
-        var ProcAdd add;
-        var NumberCell sum;
+        var Cell expr;
+        var NumberCell result;
 
         do CellConsts.init();
 
-        let numbers = List.new(NumberCell.new(2), List.new(NumberCell.new(3), List.new(NumberCell.new(10), null)));
+        let expr = ListCell.new(List.new(SymbolCell.new("+"), List.new(NumberCell.new(3), List.new(NumberCell.new(10), null))));
+        let result = Eval.eval(expr, Environment.empty());
 
-        let add = ProcAdd.new();
-
-        let sum = add.run(numbers);
-        do Output.printInt(sum.value());
+        do Output.printInt(result.value());
 
         do Output.printString("JackScheme REPL v0.0.1");
         do Output.println();

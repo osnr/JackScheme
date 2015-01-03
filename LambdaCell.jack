@@ -1,0 +1,24 @@
+class LambdaCell {
+    field int type;
+    field List lst;
+    field Environment env;
+
+    method int type() {
+        return type;
+    }
+
+    method List list() {
+        return lst;
+    }
+
+    method Environment env() {
+        return env;
+    }
+
+    constructor LambdaCell new(List l, Environment e) {
+        let type = CellConsts.LAMBDA();
+        let lst = l;
+        let env = e;
+        return this;
+    }
+}

@@ -1,8 +1,9 @@
 class SymbolCell {
+    field int type;
     field String val;
 
     method int type() {
-        return CellConsts.SYMBOL();
+        return type;
     }
 
     method String value() {
@@ -10,6 +11,7 @@ class SymbolCell {
     }
 
     constructor SymbolCell new(String v) {
+        let type = CellConsts.SYMBOL();
         let val = v;
         return this;
     }

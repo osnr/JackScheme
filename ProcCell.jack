@@ -1,0 +1,46 @@
+class ProcCell {
+    static int ADD;
+
+    field int type;
+    field int proc;
+
+    function void init() {
+        let ADD = 0;
+        return;
+    }
+
+    method int type() {
+        return type;
+    }
+
+    method Cell run(List cells) {
+        if (proc = ADD) {
+            return NumberCell.new(ProcCell.sum(cells));
+        }
+        return null;
+    }
+
+    function Cell sum(List cells) {
+        var NumberCell head;
+
+        if (cells = null) {
+            return 0;
+        }
+
+        let head = cells.head();
+        return head.value() + ProcCell.sum(cells.tail());
+    }
+
+    constructor ProcCell new(int p) {
+        let type = CellConsts.PROC();
+        let proc = p;
+        return this;
+    }
+
+    function ProcCell get(String name) {
+        if (StringList.equals(name, "+")) {
+            return ProcCell.new(ADD);
+        }
+        return null;
+    }
+}
