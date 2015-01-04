@@ -5,13 +5,13 @@ class Environment {
     field List cells_;
 
     method Environment find(String variable) {
-        if (symbols_) {
+        if (~(symbols_ = null)) {
             if (~(symbols_.find(variable) = -1)) {
                 return this;
             }
         }
 
-        if (outer_) {
+        if (~(outer_ = null)) {
             return outer_.find(variable);
         }
 

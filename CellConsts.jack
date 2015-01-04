@@ -4,9 +4,9 @@ class CellConsts {
     static Cell NIL;
 
     function void init() {
-        let FALSE = SymbolCell.new("#f");
-        let TRUE = SymbolCell.new("#t");
-        let NIL = SymbolCell.new("nil");
+        let FALSE = SymbolCell.new("#F");
+        let TRUE = SymbolCell.new("#T");
+        let NIL = SymbolCell.new("NIL");
         return;
     }
 

@@ -3,7 +3,7 @@ class StringList {
     field String data;
     field StringList next;
 
-    constructor StringList new(String car, List cdr) {
+    constructor StringList new(String car, StringList cdr) {
         let data = car;
         let next = cdr;
         return this;
@@ -57,12 +57,27 @@ class StringList {
     }
 
     method int find(String item) {
+        var int nextIdx;
         if (StringList.equals(item, data)) {
             return 0;
         }
         if (~(next = null)) {
-            return 1 + next.find(item);
+            let nextIdx = next.find(item);
+            if (nextIdx = -1) {
+                return -1;
+            } else {
+                return 1 + nextIdx;
+            }
         }
         return -1;
+    }
+
+    method void print() {
+        do Output.printString(data);
+        do Output.println();
+        if (~(next = null)) {
+            do next.print();
+        }
+        return;
     }
 } // class List

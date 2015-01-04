@@ -6,6 +6,7 @@ class Eval {
 
         if (x.type() = CellConsts.SYMBOL()) {
             let symbol = x.value();
+
             let foundEnv = env.find(symbol);
             if (~(foundEnv = null)) {
                 // sym
@@ -51,13 +52,17 @@ class Eval {
         let head = list.head();
         if (head.type() = CellConsts.SYMBOL()) {
             let headVal = head.value();
-            if (StringList.equals(headVal, "quote")) {
+            if (StringList.equals(headVal, "QUOTE")) {
                 // (quote exp)
                 return list.get(1);
             }
-            if (StringList.equals(headVal, "if")) {
+            if (StringList.equals(headVal, "IF")) {
                 // (if text conseq [alt])
                 return Eval.eval(Eval.reduceIf(list, env), env);
+            }
+            if (StringList.equals(headVal, "LAMBDA")) {
+                // (lambda (x y ...) body)
+                return LambdaCell.new(list, env);
             }
         }
 
@@ -72,7 +77,7 @@ class Eval {
         let condition = Eval.eval(condition, env);
 
         let condResult = condition.value();
-        if (StringList.equals(condResult, "#f")) {
+        if (StringList.equals(condResult, "#F")) {
             if (list.size() < 4) {
                 return CellConsts.NIL();
             } else {
@@ -118,7 +123,8 @@ class Eval {
     function Cell evalAppLambda(LambdaCell lambda, List exps, Environment env) {
         var List lambdaParts;
         var ListCell paramsCell;
-        var List params;
+        var List paramsCellList; // List<Cell>
+        var StringList params;
 
         var Environment env;
 
@@ -126,7 +132,20 @@ class Eval {
 
         let lambdaParts = lambda.list();
         let paramsCell = lambdaParts.get(1);
-        let params = paramsCell.list();
+        let paramsCellList = paramsCell.list();
+
+        let params = null;
+        while (~(paramsCellList = null)) {
+            let params = StringList.new(SymbolCell.unwrap(paramsCellList.head()), params);
+            let paramsCellList = paramsCellList.tail();
+        }
+
+        // do Output.printString("Params: ");
+        // do Output.printString(Parser.toString(paramsCell));
+        // do Output.println();
+        // do Output.printString("Exps: ");
+        // do Output.printString(Parser.toString(ListCell.new(exps)));
+        // do Output.println();
 
         let env = lambda.env();
         let env = Environment.new(params, exps, env);
