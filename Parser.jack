@@ -2,15 +2,13 @@ class Parser {
     static List tokens; // List<String>
 
     function void tokenize(String str) {
-        var int length;
         var int i;
-        var int tokenLength;
-        var char c;
-        var String token;
+        var int length;
 
-        do Output.printString("tokenizing: ");
-        do Output.printString(str);
-        do Output.println();
+        var char c;
+
+        var int tokenLength;
+        var String token;
 
         let i = 0;
         let length = str.length();
@@ -50,23 +48,12 @@ class Parser {
         }
 
         let tokens = tokens.reverse();
-
-        let i = 0;
-        do Output.printString("tokens parsed [");
-        do Output.printInt(tokens.size());
-        do Output.printString("]:");
-        do Output.println();
-        while (i < tokens.size()) {
-            do Output.printString(tokens.get(i));
-            do Output.println();
-            let i = i + 1;
-        }
         return;
     }
 
     function boolean isDigit(char c) {
         // '0' to '9'
-        return c = 48 | (c > 48 & c < 57) | c = 57;
+        return (c = 48) | ((c > 48) & (c < 57)) | (c = 57);
     }
 
     function Cell atom(String token) {
@@ -100,9 +87,6 @@ class Parser {
             return ListCell.new(list.reverse());
 
         } else {
-            do Output.printString("atomic token ");
-            do Output.printString(token);
-            do Output.println();
             return Parser.atom(token);
         }
     }
@@ -111,20 +95,18 @@ class Parser {
         var Cell ast;
         do Parser.tokenize(s);
 
-        let ast = Parser.readFromTokens();
-        do Output.printString("ast: ");
-        do Output.printString(Parser.toString(ast));
-        do Output.println();
-
-        return ast;
+        return Parser.readFromTokens();
     }
 
     function String toString(Cell exp) {
+        var String temp;
         if (exp.type() = CellConsts.LIST()) {
             return Parser.listToString(exp);
         }
         if (exp.type() = CellConsts.NUMBER()) {
-            return NumberCell.unwrap(exp);
+            let temp = String.new(10);
+            do temp.setInt(NumberCell.unwrap(exp));
+            return temp;
         }
         if (exp.type() = CellConsts.SYMBOL()) {
             return SymbolCell.unwrap(exp);
@@ -138,7 +120,7 @@ class Parser {
         do Output.printString("unknown value toString for type ");
         do Output.printInt(exp.type());
         do Output.println();
-        // do Sys.halt();
+        do Sys.halt();
         return "?";
     }
 

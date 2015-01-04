@@ -3,6 +3,7 @@ class Eval {
         var String symbol;
         var Environment foundEnv;
         var Cell result;
+
         if (x.type() = CellConsts.SYMBOL()) {
             let symbol = x.value();
             let foundEnv = env.find(symbol);
@@ -50,11 +51,11 @@ class Eval {
         let head = list.head();
         if (head.type() = CellConsts.SYMBOL()) {
             let headVal = head.value();
-            if (headVal = "quote") {
+            if (StringList.equals(headVal, "quote")) {
                 // (quote exp)
                 return list.get(1);
             }
-            if (headVal = "if") {
+            if (StringList.equals(headVal, "if")) {
                 // (if text conseq [alt])
                 return Eval.eval(Eval.reduceIf(list, env), env);
             }
@@ -88,14 +89,14 @@ class Eval {
 
         var int i;
         var int size;
-        let i = 1;
-        let size = list.size();
 
         // put the function being applied in head
         let head = Eval.eval(list.head(), env);
         let exps = null;
 
         // collect arguments in exps
+        let i = 1;
+        let size = list.size();
         while (i < size) {
             let exps = List.new(Eval.eval(list.get(i), env), exps);
             let i = i + 1;
