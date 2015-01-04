@@ -32,6 +32,30 @@ class StringList {
         return (i = a.length()) & (i = b.length());
     }
 
+    function String append(String a, String b) {
+        return StringList.appendWithExtra(a, b, 0);
+    }
+
+    function String appendWithExtra(String a, String b, int extra) {
+        var String ab;
+        var int i;
+
+        let ab = String.new(a.length() + b.length() + extra);
+
+        let i = 0;
+        while (i < a.length()) {
+            do ab.appendChar(a.charAt(i));
+            let i = i + 1;
+        }
+
+        let i = 0;
+        while (i < b.length()) {
+            do ab.appendChar(b.charAt(i));
+            let i = i + 1;
+        }
+        return ab;
+    }
+
     method int find(String item) {
         if (StringList.equals(item, data)) {
             return 0;

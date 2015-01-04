@@ -15,4 +15,8 @@ class NumberCell {
         let val = v;
         return this;
     }
+
+    function int unwrap(NumberCell c) {
+        return c.value();
+    }
 }

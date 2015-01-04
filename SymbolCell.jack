@@ -15,4 +15,8 @@ class SymbolCell {
         let val = v;
         return this;
     }
+
+    function String unwrap(SymbolCell c) {
+        return c.value();
+    }
 }

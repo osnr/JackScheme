@@ -44,11 +44,33 @@ class List {
         return next;
     }
 
+    method void setTail(List tl) {
+        let next = tl;
+        return;
+    }
+
     method int size() {
         if (next = 0) {
             return 1;
         } else {
             return 1 + next.size();
         }
+    }
+
+    method List reverse() {
+        // destructive to original List
+        var List prev;
+        var List curr;
+        var List next;
+
+        let prev = null;
+        let curr = this;
+        while (~(curr = null)) {
+            let next = curr.tail();
+            do curr.setTail(prev);
+            let prev = curr;
+            let curr = next;
+        }
+        return prev;
     }
 } // class List

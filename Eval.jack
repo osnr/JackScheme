@@ -7,25 +7,32 @@ class Eval {
             let symbol = x.value();
             let foundEnv = env.find(symbol);
             if (~(foundEnv = null)) {
+                // sym
                 let result = foundEnv.get(symbol);
             } else {
                 let result = null;
             }
 
             if (result = null) {
+                // + | - | ...
                 return ProcCell.get(symbol);
 
             } else {
+                // sym
                 return result;
             }
         }
         if (x.type() = CellConsts.NUMBER()) {
+            // 0 | 1 | 2 | ...
             return x;
         }
         if (x.type() = CellConsts.LIST()) {
+            // (a b c ...)
             return Eval.evalList(x, env);
         }
-        do Output.printString("invalid cell type");
+        do Output.printString("invalid cell type: ");
+        do Output.printInt(x.type());
+        do Output.println();
         return null;
     }
 
@@ -36,6 +43,7 @@ class Eval {
 
         let list = x.list();
         if (list = null) {
+            // ()
             return CellConsts.NIL();
         }
 
@@ -52,6 +60,7 @@ class Eval {
             }
         }
 
+        // (f x y z ...)
         return Eval.evalApp(list, env);
     }
 
@@ -82,18 +91,22 @@ class Eval {
         let i = 1;
         let size = list.size();
 
+        // put the function being applied in head
         let head = Eval.eval(list.head(), env);
         let exps = null;
 
+        // collect arguments in exps
         while (i < size) {
             let exps = List.new(Eval.eval(list.get(i), env), exps);
             let i = i + 1;
         }
 
         if (head.type() = CellConsts.LAMBDA()) {
+            // ((lambda (x y ...) body) x y ...)
             return Eval.evalAppLambda(head, exps, env);
         }
         if (head.type() = CellConsts.PROC()) {
+            // (+ 1 2 3)
             return Eval.evalAppProc(head, exps, env);
         }
 

@@ -6,11 +6,16 @@ class Main {
         var NumberCell result;
 
         do CellConsts.init();
+        do ProcCell.init();
 
         let expr = ListCell.new(List.new(SymbolCell.new("+"), List.new(NumberCell.new(3), List.new(NumberCell.new(10), null))));
         let result = Eval.eval(expr, Environment.empty());
 
         do Output.printInt(result.value());
+        do Output.println();
+
+        do Output.printString(Parser.toString(Eval.eval(Parser.read("(+ 1 30)"), Environment.empty())));
+        do Output.println();
 
         do Output.printString("JackScheme REPL v0.0.1");
         do Output.println();
@@ -20,7 +25,7 @@ class Main {
 
         while (true) {
             let input = Keyboard.readLine("scheme> ");
-            do Output.printString(input);
+            do Output.printString(Parser.toString(Eval.eval(Parser.read(input), Environment.empty())));
             do Output.println();
         }
 
