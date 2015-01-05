@@ -140,13 +140,6 @@ class Eval {
             let paramsCellList = paramsCellList.tail();
         }
 
-        // do Output.printString("Params: ");
-        // do Output.printString(Parser.toString(paramsCell));
-        // do Output.println();
-        // do Output.printString("Exps: ");
-        // do Output.printString(Parser.toString(ListCell.new(exps)));
-        // do Output.println();
-
         let env = lambda.env();
         let env = Environment.new(params, exps, env);
 

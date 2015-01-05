@@ -16,6 +16,14 @@ class SymbolCell {
         return this;
     }
 
+    function SymbolCell fromBoolean(boolean b) {
+        if (b) {
+            return CellConsts.TRUE();
+        } else {
+            return CellConsts.FALSE();
+        }
+    }
+
     function String unwrap(SymbolCell c) {
         return c.value();
     }

@@ -15,4 +15,16 @@ class ListCell {
         let lst = l;
         return this;
     }
+
+    function List unwrap(ListCell c) {
+        if (c = null) {
+            return null; // since null is a semantically valid list
+        }
+
+        if (c = CellConsts.NIL()) {
+            return null;
+        }
+
+        return c.list();
+    }
 }

@@ -1,11 +1,31 @@
 class ProcCell {
-    static int ADD;
+    static int PLUS;
+    static int TIMES;
+    static int EQ;
+    static int GT;
+    static int LENGTH;
+    static int NULLP;
+    static int CONS;
+    static int CAR;
+    static int CDR;
+    static int APPEND;
+    static int LIST;
 
     field int type;
     field int proc;
 
     function void init() {
-        let ADD = 0;
+        let PLUS = 0;
+        let TIMES = 1;
+        let EQ = 2;
+        let GT = 3;
+        let LENGTH = 4;
+        let NULLP = 5;
+        let CONS = 6;
+        let CAR = 7;
+        let CDR = 8;
+        let APPEND = 9;
+        let LIST = 10;
         return;
     }
 
@@ -14,21 +34,111 @@ class ProcCell {
     }
 
     method Cell run(List cells) {
-        if (proc = ADD) {
-            return NumberCell.new(ProcCell.sum(cells));
+        var Cell fst;
+        var Cell snd;
+
+        let fst = cells.head();
+        if (~(cells.tail() = null)) {
+            let snd = cells.get(1);
+        } else {
+            let snd = null;
+        }
+
+        // we implement primitive and convenient binary operations directly here,
+        // then use them to bootstrap variadic versions written in the language itself
+        // as well as -, <, <=, etc
+        if (proc = PLUS) {
+            return NumberCell.new(NumberCell.unwrap(fst) + NumberCell.unwrap(snd));
+        }
+        if (proc = TIMES) {
+            return NumberCell.new(NumberCell.unwrap(fst) * NumberCell.unwrap(snd));
+        }
+        if (proc = EQ) {
+            return SymbolCell.fromBoolean(ProcCell.eq(fst, snd));
+        }
+        if (proc = GT) {
+            return SymbolCell.fromBoolean(NumberCell.unwrap(fst) > NumberCell.unwrap(snd));
+        }
+        if (proc = LENGTH) {
+            return NumberCell.new(ProcCell.length(fst));
+        }
+        if (proc = NULLP) {
+            return SymbolCell.fromBoolean(ProcCell.eq(fst, CellConsts.NIL()));
+        }
+        if (proc = CONS) {
+            return ListCell.new(List.new(fst, ListCell.unwrap(snd)));
+        }
+        if (proc = CAR) {
+            return ProcCell.car(fst);
+        }
+        if (proc = CDR) {
+            return ProcCell.cdr(fst);
+        }
+        if (proc = APPEND) {
+            return null; // ProcCell.append(cells);
+        }
+        if (proc = LIST) {
+            return ListCell.new(cells);
         }
         return null;
     }
 
-    function Cell sum(List cells) {
-        var NumberCell head;
+    function boolean eq(Cell a, Cell b) {
+        var int aType;
+        var int bType;
 
-        if (cells = null) {
-            return 0;
+        if ((a = null) & (b = null)) {
+            return true;
+        } else {
+            if ((a = null) | (b = null)) {
+                return false;
+            }
         }
 
-        let head = cells.head();
-        return head.value() + ProcCell.sum(cells.tail());
+        let aType = a.type();
+        let bType = b.type();
+
+        if (~(aType = bType)) {
+            return false;
+        }
+
+        if (aType = CellConsts.SYMBOL()) {
+            return StringList.equals(SymbolCell.unwrap(a), SymbolCell.unwrap(b));
+        }
+        if (aType = CellConsts.NUMBER()) {
+            return NumberCell.unwrap(a) = NumberCell.unwrap(b);
+        }
+        if (aType = CellConsts.LIST()) {
+            return List.equals(ListCell.unwrap(a), ListCell.unwrap(b));
+        }
+        if (aType = CellConsts.PROC()) {
+            // avoid checking proc equality
+            return false;
+        }
+        if (aType = CellConsts.LAMBDA()) {
+            // avoid checking lambda equality
+            return false;
+        }
+
+        return false;
+    }
+
+    function int length(ListCell l) {
+        var List lst;
+        let lst = l.list();
+        return lst.size();
+    }
+
+    function Cell car(ListCell l) {
+        var List lst;
+        let lst = l.list();
+        return lst.head();
+    }
+
+    function Cell cdr(ListCell l) {
+        var List lst;
+        let lst = l.list();
+        return ListCell.new(lst.tail());
     }
 
     constructor ProcCell new(int p) {
@@ -39,7 +149,19 @@ class ProcCell {
 
     function ProcCell get(String name) {
         if (StringList.equals(name, "+")) {
-            return ProcCell.new(ADD);
+            return ProcCell.new(PLUS);
+        }
+        if (StringList.equals(name, "*")) {
+            return ProcCell.new(TIMES);
+        }
+        if (StringList.equals(name, "CONS")) {
+            return ProcCell.new(CONS);
+        }
+        if (StringList.equals(name, "CAR")) {
+            return ProcCell.new(CAR);
+        }
+        if (StringList.equals(name, "CDR")) {
+            return ProcCell.new(CDR);
         }
         return null;
     }

@@ -73,4 +73,19 @@ class List {
         }
         return prev;
     }
+
+    function boolean equals(List a, List b) {
+        if ((a = null) & (b = null)) {
+            return true;
+        }
+
+        if (a = null) {
+            return false;
+        }
+        if (b = null) {
+            return false;
+        }
+
+        return List.equals(a.tail(), b.tail());
+    }
 } // class List
