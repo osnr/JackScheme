@@ -33,6 +33,7 @@ class List {
         }
 
         do Output.printString("empty list access");
+        do Output.println();
         return null;
     }
 

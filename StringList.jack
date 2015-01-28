@@ -9,6 +9,19 @@ class StringList {
         return this;
     }
 
+    method String head() {
+        return data;
+    }
+
+    method StringList tail() {
+        return next;
+    }
+
+    method void setTail(StringList tl) {
+        let next = tl;
+        return;
+    }
+
     /* Disposes this List by recursively disposing its tail. */
     method void dispose() {
         if (~(next = null)) {
@@ -70,6 +83,23 @@ class StringList {
             }
         }
         return -1;
+    }
+
+    method StringList reverse() {
+        // destructive to original StringList (copy of List::reverse)
+        var StringList prev;
+        var StringList curr;
+        var StringList next;
+
+        let prev = null;
+        let curr = this;
+        while (~(curr = null)) {
+            let next = curr.tail();
+            do curr.setTail(prev);
+            let prev = curr;
+            let curr = next;
+        }
+        return prev;
     }
 
     method void print() {

@@ -93,18 +93,16 @@ class Eval {
         var List exps;
 
         var int i;
-        var int size;
 
         // put the function being applied in head
         let head = Eval.eval(list.head(), env);
         let exps = null;
 
-        // collect arguments in exps
-        let i = 1;
-        let size = list.size();
-        while (i < size) {
+        // collect arguments 1.. in exps (have to build list backward)
+        let i = list.size() - 1;
+        while (i > 0) {
             let exps = List.new(Eval.eval(list.get(i), env), exps);
-            let i = i + 1;
+            let i = i - 1;
         }
 
         if (head.type() = CellConsts.LAMBDA()) {
@@ -116,32 +114,35 @@ class Eval {
             return Eval.evalAppProc(head, exps, env);
         }
 
-        do Output.printString("not a function");
+        do Output.printString("not a function: ");
+        do Output.printString(Parser.toString(head));
+        do Output.println();
         return null;
     }
 
     function Cell evalAppLambda(LambdaCell lambda, List exps, Environment env) {
-        var List lambdaParts;
-        var ListCell paramsCell;
+        var List lambdaParts; // List<Cell>
+        var ListCell paramsCell; // ListCell<Cell>
         var List paramsCellList; // List<Cell>
-        var StringList params;
+        var StringList paramNames;
 
         var Environment env;
 
         var Cell body;
 
-        let lambdaParts = lambda.list();
-        let paramsCell = lambdaParts.get(1);
-        let paramsCellList = paramsCell.list();
+        let lambdaParts = lambda.list(); // (lambda (x y) (+ x y))
+        let paramsCell = lambdaParts.get(1); // (x y)
+        let paramsCellList = paramsCell.list(); // [x, y]
 
-        let params = null;
+        let paramNames = null; // ["x", "y"]
         while (~(paramsCellList = null)) {
-            let params = StringList.new(SymbolCell.unwrap(paramsCellList.head()), params);
+            let paramNames = StringList.new(SymbolCell.unwrap(paramsCellList.head()), paramNames);
             let paramsCellList = paramsCellList.tail();
         }
+        let paramNames = paramNames.reverse();
 
         let env = lambda.env();
-        let env = Environment.new(params, exps, env);
+        let env = Environment.new(paramNames, exps, env);
 
         let body = lambdaParts.get(2);
 
