@@ -10,6 +10,7 @@ class CellConsts {
         return;
     }
 
+    function int ERROR() { return -1; }
     function int SYMBOL() { return 0; }
     function int NUMBER() { return 1; }
     function int LIST() { return 2; }

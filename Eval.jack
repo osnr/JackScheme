@@ -4,6 +4,9 @@ class Eval {
         var Environment foundEnv;
         var Cell result;
 
+        if (x.type() = CellConsts.ERROR()) {
+            return x;
+        }
         if (x.type() = CellConsts.SYMBOL()) {
             let symbol = x.value();
 
@@ -17,12 +20,16 @@ class Eval {
 
             if (result = null) {
                 // + | - | ...
-                return ProcCell.get(symbol);
-
-            } else {
-                // sym
-                return result;
+                let result = ProcCell.get(symbol);
             }
+
+            if (result = null) {
+                // not a procedure or defined symbol
+                return ErrorCell.new(0);
+            }
+
+            // sym
+            return result;
         }
         if (x.type() = CellConsts.NUMBER()) {
             // 0 | 1 | 2 | ...
@@ -117,7 +124,7 @@ class Eval {
         do Output.printString("not a function: ");
         do Output.printString(Parser.toString(head));
         do Output.println();
-        return null;
+        return ErrorCell.new(1);
     }
 
     function Cell evalAppLambda(LambdaCell lambda, List exps, Environment env) {

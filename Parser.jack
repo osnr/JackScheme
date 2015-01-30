@@ -119,6 +119,9 @@ class Parser {
         if (exp.type() = CellConsts.PROC()) {
             return "<Proc>";
         }
+        if (exp.type() = CellConsts.ERROR()) {
+            return "<Error>";
+        }
         do Output.printString("unknown value toString for type ");
         do Output.printInt(exp.type());
         do Output.println();

@@ -1,0 +1,10 @@
+class ErrorCell {
+    field int type;
+    field int errorType;
+
+    constructor ErrorCell new(int errType) {
+        let type = CellConsts.ERROR();
+        let errorType = errType;
+        return this;
+    }
+}
