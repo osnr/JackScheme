@@ -5,7 +5,7 @@ It's just a REPL for now. Not meant to implement any serious dialect of Scheme. 
 Missing stuff:
 - Garbage collection
 - Most of the standard library, including any kind of I/O or graphics, or even comparisons (only implemented functions are car, cdr, and cons)
-- No error reporting (so if you use an undefined symbol or something like that, it'll just crash)
+- Hacky error reporting (so if you use an undefined symbol or something like that in certain places, it'll just crash)
 - Variables/state
 
 Probably quite buggy as well.
